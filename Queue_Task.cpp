@@ -1,3 +1,9 @@
+/* Trabalho de fila
+    Nome: Matheus Simões Peixeiro
+    Curso: Engenharia da Computação
+    Etapa: 2ª
+*/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <locale.h>
@@ -58,21 +64,52 @@ bool Dequeue(QUEUE* queue, RECORD* value){
     return true;
 }
 
-bool PrintQueue(){
-	
+bool PrintQueue(QUEUE* queue){
+    system("cls");
+    printf("\nImprimindo:\n\n");
+    if (isEmpty(queue)) return false;
+
+    RECORD* aux = queue->begin;
+    while (aux->next != NULL){
+        printf("%c", aux->letter);
+        aux = aux->next;
+    }
+    printf("\n\n");
+    system("pause");
+    system("cls");
+    return true;
+}
+
+QUEUE* JoinQueue(QUEUE* name, QUEUE* surname){
+    QUEUE* finalQueue = CreateQueue();
+
+    RECORD* aux = name->begin;
+    while (aux != NULL){
+        Enqueue(finalQueue, aux->letter);
+        aux = aux->next;
+    }
+
+    Enqueue(finalQueue, ' ');
+
+    aux = surname->begin;
+    while (aux != NULL){
+        Enqueue(finalQueue, aux->letter);
+        aux = aux->next;
+    }
+    return finalQueue;
 }
 
 int main(){
 	// definindo o idioma como português
 	setlocale(LC_ALL, "Portuguese");
-	
-	printf("Seja bem-vindo ao programa que junta dois textos em um!\n\n");
+
+	printf("Seja bem-vindo ao concatenador de duas strings por meio de fila!\n\n");
 	system("pause");
 	system("cls");
-	
+
 	QUEUE* name = CreateQueue();
 	QUEUE* surname = CreateQueue();
-	
+
 	char nameString[11];
 	char surnameString[21];
 	printf("\nInforme o nome: ");
@@ -81,84 +118,22 @@ int main(){
 	printf("\nInforme o sobrenome: ");
 	fflush(stdin);
 	gets(surnameString);
-	
+	printf("\n");
+	system("pause");
+
 	// Fazendo push para inserir o nome na stack "name"
-	for (int i=0 ; i<strlen(nameString) ; i++)
-		Enqueue(name, nameString[i]);	
-	
+	for (int i=0 ; i<=strlen(nameString) ; i++)
+		Enqueue(name, nameString[i]);
+
 	// Fazendo push para inserir o nome na stack "name"
-	for (int i=0 ; i<strlen(surnameString) ; i++)
-		Enqueue(name, surnameString[i]);	
-	
-	
-	
-    /*RECORD recWriter, recReader;
+	for (int i=0 ; i<=strlen(surnameString) ; i++)
+		Enqueue(surname, surnameString[i]);
 
-    QUEUE* queue = CreateQueue();
+    // Chamando função de que juntar nome e sobrenome
+    QUEUE* newQueue = JoinQueue(name, surname);
 
-    recWriter.key = 3;
-    if(Enqueue(queue, recWriter)){
-        printf("Record 3 enqueued\n");
-    }
-    else{
-        printf("Queue full!\n");
-    }
-
-    recWriter.key = 5;
-    if(Enqueue(queue, recWriter)){
-        printf("Record 5 enqueued\n");
-    }
-    else{
-        printf("Queue full!\n");
-    }
-
-    recWriter.key = 10;
-    if(Enqueue(queue, recWriter)){
-        printf("Record 10 enqueued\n");
-    }
-    else{
-        printf("Queue full!\n");
-    }
-
-    if(Peek(queue, &recReader))
-    {
-        printf("Peek begin: %d\n", recReader.key);
-    }
-
-    if(Dequeue(queue, &recReader))
-    {
-        printf("Value dequeued: %d\n", recReader.key);
-    }
-
-    if(Peek(queue, &recReader))
-    {
-        printf("Peek begin: %d\n", recReader.key);
-    }
-
-    if(Dequeue(queue, &recReader))
-    {
-        printf("Value dequeued: %d\n", recReader.key);
-    }
-
-    if(Peek(queue, &recReader))
-    {
-        printf("Peek begin: %d\n", recReader.key);
-    }
-
-    if(Dequeue(queue, &recReader))
-    {
-        printf("Value dequeued: %d\n", recReader.key);
-    }
-
-    if(Dequeue(queue, &recReader))
-    {
-        printf("Value popped: %d\n", recReader.key);
-    }
-    else
-    {
-        printf("Error!\n");
-    }*/
-
+    // Imprimindo a nova Queue
+    if(PrintQueue(newQueue));
 
     return 0;
 }
